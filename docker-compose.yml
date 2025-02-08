@@ -1,14 +1,14 @@
-version: '3.8'
-
 services:
   # Apache and PHP service
   web:
-    image: php:8-apache
+    build: .  # Use the Dockerfile in the current directory
     container_name: php-apache-container
     ports:
       - "80:80"
     volumes:
       - .:/var/www/html
+    networks:
+      - my-network
 
   # MySQL service
   mysql:
