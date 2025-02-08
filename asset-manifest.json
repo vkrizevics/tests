@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/static/css/main.fbbe67c6.css",
+    "main.js": "/static/js/main.386a79e4.js",
+    "static/js/453.780b3412.chunk.js": "/static/js/453.780b3412.chunk.js",
+    "static/media/testa-uzdevums.jpg": "/static/media/testa-uzdevums.cfa1aa7c3f67dcf4b46b.jpg",
+    "static/media/logo.svg": "/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/index.html",
+    "main.fbbe67c6.css.map": "/static/css/main.fbbe67c6.css.map",
+    "main.386a79e4.js.map": "/static/js/main.386a79e4.js.map",
+    "453.780b3412.chunk.js.map": "/static/js/453.780b3412.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fbbe67c6.css",
+    "static/js/main.386a79e4.js"
+  ]
+}
