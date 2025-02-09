@@ -5,8 +5,6 @@ require '../vendor/autoload.php';
 
 use Api\Classes\Controller\TestQuestions;
 
-$testId = $_GET['test'] ?? 0;
-
 TestQuestions::getInstance()
-    ->getCurrentQuestion((int)$testId)
+    ->submitAnswer((int)$answerId)
     ->outputResult();

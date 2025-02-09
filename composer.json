@@ -1,0 +1,10 @@
+{
+    "require": {
+        "illuminate/database": "^11.41"
+    },
+    "autoload": {
+        "psr-4": {
+            "Api\\Classes\\": "api/classes/"
+        }
+    }
+}
