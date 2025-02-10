@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Question extends Model
+class Answer extends Model
 {
     use HasFactory, SoftDeletes;
 
     // The name of the table associated with the model
-    protected $table = 'questions';
+    protected $table = 'answers';
 
     // The primary key associated with the table
     protected $primaryKey = 'id';
@@ -22,35 +22,17 @@ class Question extends Model
     // The attributes that are mass assignable
     protected $fillable = [
         'text',
-        'test',
-        'number',
-    ];
-
-    // The attributes that should be cast to native types
-    protected $casts = [
-        'test' => 'integer',
-        'number' => 'integer',
     ];
 
     /**
-     * Get the test that owns the question.
+     * Get the question that owns the answer.
      */
-    public function test()
+    public function question()
     {
-        return $this->belongsTo(Test::class);
+        return $this->belongsTo(Question::class);
     }
 
-    /**
-     * Get the answers for the question.
-     */
-    public function answers()
-    {
-        return $this->hasMany(Answer::class);
-    }
-
-    /**
-     * Get the right answers for the question.
-     */
+    // Define the relationship with RightAnswer
     public function rightAnswer()
     {
         return $this->hasOne(RightAnswer::class);

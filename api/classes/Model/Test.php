@@ -4,10 +4,11 @@ namespace Api\Classes\Model;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Test extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     // The name of the table associated with the model
     protected $table = 'tests';
@@ -27,18 +28,23 @@ class Test extends Model
     // The attributes that should be cast to native types
     protected $casts = [
         'enabled' => 'boolean',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
     ];
-
-    // Define the date format for the created_at and updated_at attributes
-    protected $dateFormat = 'Y-m-d H:i:s';
 
     /**
      * Get all the questions for the test.
      */
     public function questions()
     {
-        return $this->hasMany(Question::class, 'test', 'id');
+        return $this->hasMany(Question::class);
+    }
+
+    public function answerLogs()
+    {
+        return $this->hasMany(AnswerLog::class);
+    }
+
+    public function testResults()
+    {
+        return $this->hasMany(TestResult::class);  // Lietotājs var būt saistīts ar vairākiem rezultātiem
     }
 }

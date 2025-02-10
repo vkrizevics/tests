@@ -1,19 +1,29 @@
 <?php
-declare(strict_types = 1);
-
 namespace Api\Classes\Controller;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 
+/**
+ * Traits, kas nodrošina kontrolleru saikni ar datubāzi un ievaddatiem no pieprasījumiem 
+ */
+
 trait Controller {
+    /**
+     * Tiek izvadīts kā JSON priekš React AJAX pieprasījumiem
+     * 
+     * @array 
+     */
     protected array $ret;
 
+    /**
+     * Inicializē kontrolleri
+     */
     public static function getInstance(): static {
         session_start();
 
         $capsule = new Capsule;
 
-        // Set up the database connection for Eloquent models
+        // Datubāzes konfigurācija
         $capsule->addConnection([
             'driver'    => 'mysql',
             'host'      => 'mysql', 
@@ -25,15 +35,18 @@ trait Controller {
             'prefix'    => '',
         ]);
 
-        // Set the Capsule instance as globally accessible
+        // Kapsula būs globāli sasniedzama
         $capsule->setAsGlobal();
 
-        // Boot Eloquent ORM (theoretically optional, but required to use Eloquent's features like relationships, etc.)
+        // Startējam Eloquent lai pilnvērtīgi izmantotu tā ORM
         $capsule->bootEloquent();
 
         return new static();
     }
 
+    /**
+     * Izvada JSON priekš React
+     */
     public function outputResult(): void {
         header('Content-Type: application/json');
 

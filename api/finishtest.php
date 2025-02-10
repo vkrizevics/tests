@@ -4,5 +4,5 @@ require '../vendor/autoload.php';
 use Api\Classes\Controller\Tests;
 
 Tests::getInstance()
-    ->getTests()
+    ->finishCurrentTest()
     ->outputResult();
