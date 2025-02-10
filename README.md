@@ -8,9 +8,12 @@
 - **docker-compose up -d**
 - **composer install**
 - **composer dump-autoload**
-6. Ieejiet jauizveidotajā php-apache konteinerī un izpildiet komandu pdo_mysql draivera korektai instalēšanai:
+6. Ieejiet jauizveidotajā vkrizevics-php-apache-container konteinerī un izpildiet komandu pdo_mysql draivera korektai instalēšanai:
 - **./install.sh**
-7. Pārlūkā dodieties uz phpMyAdmin http://localhost:8080 - lietotājs root parole 3954895ergZCX$
-8. Atvēriet datubāzi tests un importējiet mysqldump.sql failu tajā (fails ir tajā pašā mapē, kur šis README)
-9. Pārlūkā dodaties uz http://localhost/ un notestējiet testēšanas sistēmu (ja lietotāja vārds tai vēl nav zināms, tā automātiski izveido jaunu lietotāju)
-10. Frontenda pirmkods React ir pieejams https://github.com/vkrizevics/tests-react/
+7. Pārstartējiet vkrizevics-php-apache-container, piemēram, terminālī no šis mapes, kur atrodas README, izpildot komandas:
+- **docker-compose down**
+- **docker-compose up -d**
+8. Pārlūkā dodieties uz phpMyAdmin http://localhost:8080 - lietotājs root parole 3954895ergZCX$
+9. Atvēriet datubāzi tests un importējiet mysqldump.sql failu tajā (fails ir tajā pašā mapē, kur šis README)
+10. Pārlūkā dodaties uz http://localhost/ un notestējiet testēšanas sistēmu (ja lietotāja vārds tai vēl nav zināms, tā automātiski izveido jaunu lietotāju)
+11. Frontenda pirmkods React ir pieejams https://github.com/vkrizevics/tests-react/
