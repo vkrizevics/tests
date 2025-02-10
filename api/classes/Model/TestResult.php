@@ -6,32 +6,51 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * Gala rezultāts testam tabulā test_results
+ */
 class TestResult extends Model
 {
-    use HasFactory, SoftDeletes; // Piešķir Soft Deletes un Factory atbalstu
+    use HasFactory, SoftDeletes;
 
-    // Definējam tabulas nosaukumu, ja tas ir atšķirīgs no modeļa nosaukuma (neobligāti)
+    /**
+     * @var string
+     */
     protected $table = 'test_results';
 
-    // Primārais atslēgas lauks
+    /**
+     * @var string
+     */
     protected $primaryKey = 'id';
 
-    // Mass-assignment aizsardzība
+    /**
+     * Drīkst masveidā aizpildīt
+     * 
+     * @var string[]
+     */
     protected $fillable = [
         'user_id',
         'test_id',
         'right_answers',
     ];
 
-    // Attiecības ar User modeli
+    /**
+     * Katrs rezultāts pieder kādam lietotājam
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user()
     {
-        return $this->belongsTo(User::class);  // Katrs rezultāts pieder lietotājam
+        return $this->belongsTo(User::class);
     }
 
-    // Attiecības ar Test modeli
+    /**
+     * Katrs rezultāts pieder konkrētajam testam
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function test()
     {
-        return $this->belongsTo(Test::class);  // Katrs rezultāts pieder konkrētajam testam
+        return $this->belongsTo(Test::class);
     }
 }

@@ -5,20 +5,35 @@ namespace Api\Classes\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Atbilžu logs tabulā answer_logs
+ */
 class AnswerLog extends Model
 {
     use HasFactory;
 
-    // The name of the table associated with the model
+    /**
+     * @var string
+     */
     protected $table = 'answer_logs';
 
-    // The primary key associated with the table
+    /**
+     * @var string
+     */
     protected $primaryKey = 'id';
 
-    // Indicates if the model should be timestamped
+    /**
+     * Ierakstu datumus automātiski apstrādā Eloquent
+     * 
+     * @var bool
+     */
     public $timestamps = true;
 
-    // The attributes that are mass assignable
+    /**
+     * Drīkst masveidā aizpildīt
+     * 
+     * @var string[]
+     */
     protected $fillable = [
         'user_id',
         'test_id',
@@ -27,7 +42,9 @@ class AnswerLog extends Model
     ];
 
     /**
-     * Get the user that owns the answer log.
+     * Lietotājs, kura atbilde ir nologota
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
@@ -35,7 +52,9 @@ class AnswerLog extends Model
     }
 
     /**
-     * Get the test that the answer log belongs to.
+     * Tests, kuru pildīja lietotājs
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function test()
     {
@@ -43,7 +62,9 @@ class AnswerLog extends Model
     }
 
     /**
-     * Get the question that the answer log belongs to.
+     * Jautājums, uz kuru atbildēja lietotājs
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function question()
     {
@@ -51,7 +72,9 @@ class AnswerLog extends Model
     }
 
     /**
-     * Get the answer that the answer log belongs to.
+     * Atbildes variants, kuru izvēlējās lietotājs
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function answer()
     {

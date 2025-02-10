@@ -6,27 +6,45 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * Pareiza atbilde uz jautājumu no tabulas right_answers
+ */
 class RightAnswer extends Model
 {
     use HasFactory, SoftDeletes;
 
-    // The name of the table associated with the model
+    /**
+     * @var string
+     */
     protected $table = 'right_answers';
 
-    // The primary key associated with the table
+    /**
+     * 
+     * @var string
+     */
     protected $primaryKey = 'id';
 
-    // Indicates if the model should be timestamped
+    /**
+     * Ierakstu datumus automātiski apstrādā Eloquent
+     * 
+     * @var bool
+     */
     public $timestamps = true;
 
-    // The attributes that are mass assignable
+    /**
+     * Drīkst masveidā aizpildīt
+     * 
+     * @var string[]
+     */
     protected $fillable = [
         'question_id',
         'answer_id',
     ];
 
     /**
-     * Get the question that owns the right answer.
+     * Jautājums, uz kuru ir jādod atbilde
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function question()
     {
@@ -34,23 +52,25 @@ class RightAnswer extends Model
     }
 
     /**
-     * Get the answer that is the right answer.
+     * Atbilde, kura ir pareiza
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function answer()
     {
         return $this->belongsTo(Answer::class);
     }
 
-    // Ensure only one right answer per question
+    /**
+     * Nodrošina, ka tikai viena atbilde ir pareiza
+     */
     public static function boot()
     {
         parent::boot();
 
         static::creating(function ($model) {
-            // Ensure only one right answer is allowed per question
-            
             if (self::where('question_id', $model->question_id)->exists()) {
-                throw new \Exception('This question already has a right answer.');
+                throw new \Exception('Šim jautājumam jau ir pareiza atbilde.');
             }
         });
     }

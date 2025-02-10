@@ -6,34 +6,45 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * Testa jautājums no tabulas questions
+ */
 class Question extends Model
 {
     use HasFactory, SoftDeletes;
 
-    // The name of the table associated with the model
+    /**
+     * @var string
+     */
     protected $table = 'questions';
 
-    // The primary key associated with the table
+    /**
+     * @var string
+     */
     protected $primaryKey = 'id';
 
-    // Indicates if the model should be timestamped
+    /**
+     * Ierakstu datumus automātiski apstrādā Eloquent
+     * 
+     * @var bool
+     */
     public $timestamps = true;
 
-    // The attributes that are mass assignable
+    /**
+     * Drīkst masveidā aizpildīt
+     * 
+     * @var string[]
+     */
     protected $fillable = [
         'text',
         'test',
         'number',
     ];
 
-    // The attributes that should be cast to native types
-    protected $casts = [
-        'test' => 'integer',
-        'number' => 'integer',
-    ];
-
     /**
-     * Get the test that owns the question.
+     * Tests, kuram pieder jautājums
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function test()
     {
@@ -41,7 +52,9 @@ class Question extends Model
     }
 
     /**
-     * Get the answers for the question.
+     * Atbildes varianti jautājumam
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function answers()
     {
@@ -49,13 +62,20 @@ class Question extends Model
     }
 
     /**
-     * Get the right answers for the question.
+     * Pareiza atbilde
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function rightAnswer()
     {
         return $this->hasOne(RightAnswer::class);
     }
 
+    /**
+     * Loga ieraksti, kuros ir minēts jautājums
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function answerLogs()
     {
         return $this->hasMany(AnswerLog::class);

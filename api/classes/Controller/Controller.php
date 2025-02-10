@@ -13,10 +13,12 @@ trait Controller {
      * 
      * @array 
      */
-    protected array $ret;
+    protected array $ret = [];
 
     /**
-     * Inicializē kontrolleri
+     * Inicializē kontrolleri ar plūstošo interfeisu
+     * 
+     * @return $this
      */
     public static function getInstance(): static {
         session_start();

@@ -6,45 +6,74 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * Tests no tests tabulas
+ */
 class Test extends Model
 {
     use HasFactory, SoftDeletes;
 
-    // The name of the table associated with the model
+    /**
+     * @var string
+     */
     protected $table = 'tests';
 
-    // The primary key associated with the table
+    /**
+     * @var string
+     */
     protected $primaryKey = 'id';
 
-    // Indicates if the model should be timestamped
+    /**
+     * Ierakstu datumus automātiski apstrādā Eloquent
+     * 
+     * @var bool
+     */
     public $timestamps = true;
 
-    // The attributes that are mass assignable
+    /**
+     * Drīkst masveidā aizpildīt
+     * 
+     * @var string[]
+     */
     protected $fillable = [
         'name',
         'enabled',
     ];
 
-    // The attributes that should be cast to native types
+    /**
+     * Lauki, kuri būs jākonvertē uz PHP tipiem
+     */
     protected $casts = [
         'enabled' => 'boolean',
     ];
 
     /**
-     * Get all the questions for the test.
+     * Visi jautājumi šajā testā
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function questions()
     {
         return $this->hasMany(Question::class);
     }
 
+    /**
+     * Visi logi, kuros ir minēts šis tēsts
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function answerLogs()
     {
         return $this->hasMany(AnswerLog::class);
     }
 
+    /**
+     * Visi gala rezultāti, kuros ir minēts šis tests
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function testResults()
     {
-        return $this->hasMany(TestResult::class);  // Lietotājs var būt saistīts ar vairākiem rezultātiem
+        return $this->hasMany(TestResult::class);
     }
 }

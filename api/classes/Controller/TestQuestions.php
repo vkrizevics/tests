@@ -14,17 +14,24 @@ use Api\Classes\Model\TestResult;
 class TestQuestions {
     use Controller, GetTest, PostData;
 
+    /**
+     * Atgriež kārtējo jautājumu un atbildes
+     * 
+     * @return $this
+     */
     public function getCurrentQuestion(): static
     {
         if (isset($_SESSION['currentTest'])) {
             $_SESSION['currentQuestion'] ??= 1;
 
-            // Get the enabled test with the given test ID
             $test = $this->getTest($_SESSION['currentTest']);
 
-            // Check if the test exists
+            // Ja lietotāja uzsāktais test ir atrodāms datubāzē
             if ($test) {
-                // Get only id and text for the related questions matching the specific number
+                /*
+                 * Atrast kārtējo jautājumu pēc kartas, lai nemaldinātu lietotāju, 
+                 * paļaujoties uz numuriem, kas varētu būt neprecīzi
+                 */
                 $question = $test->questions()
                     ->skip($_SESSION['currentQuestion'] - 1)
                     ->take(1)
@@ -36,13 +43,13 @@ class TestQuestions {
                         ->select('id', 'text')
                         ->get()
                         ->toArray();
-                    shuffle($answersToRandomize);
+                    shuffle($answersToRandomize); // pārkārtot atbildes nejaušā secībā
                     $answers = array_values($answersToRandomize);
                 } else {
                     $answers = [];
                 }
             } else {
-                // Handle case where the test doesn't exist or isn't enabled
+                // Ja testa nav, nebūs nedz jautājuma, nedz atbilžu
                 $question = null;
                 $answers = [];
             }
@@ -51,6 +58,7 @@ class TestQuestions {
                 $errorMsg = '';
                 $questionText = '';
                 
+                // Korektam jautājumam jābūt vismaz 2 atbildēm, lai to varētu uzdot lietotājam
                 if ($question) {
                     if (count($answers) >= 2) {
                         $questionText = $question->text;
@@ -65,6 +73,7 @@ class TestQuestions {
                     'errorMsg' => $errorMsg,
                     'currentTest' => $test->id,
                     'question' => $questionText,
+                    
                     // Lai lietotājs nebrīnītos par nepareiziem jautājumu numuriem, ja kas
                     'questionCurrentNumber' => (int)$_SESSION['currentQuestion'],
                     'questionTotalCount' => $test->questions()->count(),
@@ -90,9 +99,15 @@ class TestQuestions {
         return $this;
     }
 
+    /**
+     * Piefiksē doto atbildi, pārtin jautājumu uz priekšu
+     * 
+     * @return $this
+     */
     public function submitAnswer(): static 
     {
-        $this->readPostData();
+        $this->readPostData(); // ielasam POST datus no React
+        
         $answerId = (int)$this->getPostData('answer', 0);
 
         $errorMsg = '';
@@ -110,6 +125,7 @@ class TestQuestions {
                     ->first();
                 
                 if ($questionId) {
+                    // Ja atbilde ir pareiza un dati derīgi, uzlabojam gala rezultātu sesijā, lai atslogotu datubāzi
                     $rightAnswerId = RightAnswer::where('question_id', $questionId)
                         ->pluck('answer_id')
                         ->first();
@@ -143,9 +159,10 @@ class TestQuestions {
                 $errorMsg = 'Nav šāda testa';
             }
 
+            // Jebkurā gadījuma, ja vien atbilde pastāv, logojam to
             $log = new AnswerLog();
 
-            $log->user_id = 1;
+            $log->user_id = $_SESSION['userId'];
             $log->test_id = $_SESSION['currentTest'] ?? 0;
             $log->question_id = $questionId;
             $log->answer_id = $answerId;

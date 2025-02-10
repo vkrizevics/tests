@@ -6,38 +6,64 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * Atbilde to tabulas answers
+ */
 class Answer extends Model
 {
     use HasFactory, SoftDeletes;
 
-    // The name of the table associated with the model
+    /**
+     * @var string
+     */
     protected $table = 'answers';
 
-    // The primary key associated with the table
+    /**
+     * @var string
+     */
     protected $primaryKey = 'id';
 
-    // Indicates if the model should be timestamped
+    /**
+     * Ierakstu datumus automātiski apstrādā Eloquent
+     *  
+     * @var bool
+     */
     public $timestamps = true;
 
-    // The attributes that are mass assignable
+    /**
+     * Drīkst masveidā aizpildīt
+     * 
+     * @var string[]
+     */
     protected $fillable = [
         'text',
     ];
 
     /**
-     * Get the question that owns the answer.
+     * Kuram jautājumam ir ši atbilde?
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function question()
     {
         return $this->belongsTo(Question::class);
     }
 
-    // Define the relationship with RightAnswer
+    /**
+     * Vai šī atbilde ir pareiza?
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function rightAnswer()
     {
         return $this->hasOne(RightAnswer::class);
     }
 
+    /**
+     * Kuros logos šī atbilde ir minēta?
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function answerLogs()
     {
         return $this->hasMany(AnswerLog::class);

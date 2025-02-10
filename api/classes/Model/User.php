@@ -5,20 +5,35 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * Lietotāju reģistrs bez autentifikācijas tabulā users
+ */
 class User extends Model
 {
     use HasFactory, SoftDeletes;
 
-    // Piešķirtais tabulas nosaukums, ja tas ir nepieciešams
+    /**
+     * @var string
+     */
     protected $table = 'users';
 
-    // Primārā atslēga
+    /**
+     * @var string
+     */
     protected $primaryKey = 'id';
 
-    // Indicates if the model should be timestamped
+    /**
+     * Ierakstu datumus automātiski apstrādā Eloquent
+     * 
+     * @var bool
+     */
     public $timestamps = true;
 
-    // Aizsardzība pret masveida piešķiršanu
+    /**
+     * Drīkst masveidā aizpildīt
+     * 
+     * @var string[]
+     */
     protected $fillable = [
         'name',
     ];

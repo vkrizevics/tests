@@ -8,6 +8,10 @@ use Api\Classes\Model\Test;
  */
 
 trait GetTest {
+    /**
+     * @param int|null $testId
+     * @return Test|null
+     */
     protected function getTest(?int $testId): ?Test
     {
         if ($testId) {

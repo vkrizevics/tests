@@ -4,9 +4,17 @@ namespace Api\Classes\Controller;
 use Api\Classes\Model\Test;
 use Api\Classes\Model\User;
 
+/**
+ * Kontrolleris, kas nodrošina testu izvēli, uzsākšanu un pabeigšanu
+ */
 class Tests {
     use Controller, GetTest, PostData;
 
+    /**
+     * Izvadīt visu iespējoto testu sarakstu
+     * 
+     * @return $this
+     */
     public function getTests(): static
     {
         $this->ret = Test::where('enabled', true)
@@ -16,8 +24,15 @@ class Tests {
         return $this;
     }
 
+    /**
+     * Uzsākt testu un piereģistrēt lietotāju, ja vajag
+     * 
+     * @return $this
+     */
     public function startTest(): static 
     {
+        $this->readPostData(); // ielasam POST datus no React
+
         $_SESSION['userName'] = $this->getPostData('name', '');
         $_SESSION['currentTest'] = $this->getPostData('test', null);
         $_SESSION['currentQuestion'] = 1;
@@ -30,6 +45,7 @@ class Tests {
         } else {
             if ($this->getTest($_SESSION['currentTest'])) {
                 $user = User::firstOrCreate(['name' => $_SESSION['userName']]);
+                
                 $_SESSION['userId'] = $user->id;
             } else {
                 $errorMsg = 'Nav šāda testa';  
@@ -43,6 +59,11 @@ class Tests {
         return $this;
     }
 
+    /**
+     * Izvadīt gala rezultātu testa pabeigšanas skatam
+     * 
+     * @return $this
+     */
     public function finishCurrentTest(): static
     {
         $errorMsg = '';
@@ -62,6 +83,7 @@ class Tests {
                             'userName' => $_SESSION['userName'] ?? '',
                         ];
 
+                        // Atgriezt jēgpilnus datus, ja viss ir kārtībā
                         return $this;
                     } else {
                         $errorMsg = 'Tests nav iziets līdz galam';
@@ -76,6 +98,7 @@ class Tests {
             $errorMsg = 'Tests nav uzsākts';
         }
 
+        // Citādi atgriezt kādu no kļūdas paziņojumiem
         $this->ret = [
             'errorMsg' => $errorMsg
         ];
