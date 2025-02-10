@@ -2,7 +2,7 @@ services:
   # Apache and PHP service
   web:
     build: .  # Use the Dockerfile in the current directory
-    container_name: php-apache-container
+    container_name: vkrizevics-php-apache-container
     ports:
       - "80:80"
     volumes:
@@ -15,7 +15,7 @@ services:
     image: mysql:8.0
     networks:
       - my-network
-    container_name: mysql-container
+    container_name: vkrizevics-mysql-container
     ports:
       - "3306:3306"
     environment:
@@ -31,7 +31,7 @@ services:
     image: phpmyadmin/phpmyadmin
     networks:
       - my-network
-    container_name: phpmyadmin-container
+    container_name: vkrizevics-phpmyadmin-container
     ports:
       - "8080:80"
     environment:
